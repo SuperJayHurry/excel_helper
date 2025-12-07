@@ -1,0 +1,157 @@
+:root {
+    font-family: "Microsoft YaHei", sans-serif;
+    color: #1f2d3d;
+    background-color: #f4f6fb;
+}
+
+body {
+    margin: 0;
+    background: #f4f6fb;
+}
+
+.site-header {
+    background: #1f6feb;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.site-header nav a {
+    color: #fff;
+    margin-left: 1rem;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 30px rgba(31, 111, 235, 0.08);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e6e9f0;
+    text-align: left;
+}
+
+th {
+    background: #f8fafc;
+    font-weight: 600;
+}
+
+input[type="text"], input[type="date"], textarea, select, input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #cfd8e3;
+    border-radius: 6px;
+    margin-top: 0.3rem;
+}
+
+button {
+    background: #1f6feb;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+button:hover {
+    background: #1558c0;
+}
+
+.grid-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.grid-form .full-row {
+    grid-column: 1 / -1;
+}
+
+.status.SUBMITTED {
+    color: #1f9254;
+    font-weight: 600;
+}
+
+.status.PENDING,
+.status.REMINDED {
+    color: #c06b00;
+    font-weight: 600;
+}
+
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(120deg, #87cefa, #1f6feb);
+}
+
+.login-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.alert {
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.alert-danger {
+    background: #fdecea;
+    color: #b42318;
+}
+
+.alert-success {
+    background: #ecfdf3;
+    color: #1f9254;
+}
+
+.hint {
+    font-size: 0.85rem;
+    color: #70757a;
+}
+
+.actions form {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-right: 1rem;
+    align-items: center;
+}
+
+.actions input[type="text"] {
+    width: 240px;
+}
+
+.btn {
+    background: #13b497;
+    padding: 0.4rem 0.8rem;
+    color: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+}
+
