@@ -5,6 +5,7 @@ import java.security.Principal;
 import org.example.dto.TemplateForm;
 import org.example.entity.User;
 import org.example.entity.enums.Department;
+import org.example.service.EmailReceiveService;
 import org.example.service.SubmissionService;
 import org.example.service.TemplateService;
 import org.example.service.UserService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AdminController {
@@ -24,13 +26,16 @@ public class AdminController {
     private final TemplateService templateService;
     private final UserService userService;
     private final SubmissionService submissionService;
+    private final EmailReceiveService emailReceiveService;
 
     public AdminController(TemplateService templateService,
                            UserService userService,
-                           SubmissionService submissionService) {
+                           SubmissionService submissionService,
+                           EmailReceiveService emailReceiveService) {
         this.templateService = templateService;
         this.userService = userService;
         this.submissionService = submissionService;
+        this.emailReceiveService = emailReceiveService;
     }
 
     @GetMapping("/admin/dashboard")
@@ -80,6 +85,17 @@ public class AdminController {
     public String aggregate(@PathVariable Long id) {
         templateService.aggregate(id);
         return "redirect:/admin/templates/" + id + "?aggregated";
+    }
+
+    @PostMapping("/admin/templates/{id}/sync-emails")
+    public String syncEmails(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            int count = emailReceiveService.receiveSubmissions(id);
+            redirectAttributes.addFlashAttribute("message", "成功同步 " + count + " 份邮件提交");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "同步失败: " + e.getMessage());
+        }
+        return "redirect:/admin/templates/" + id;
     }
 }
 

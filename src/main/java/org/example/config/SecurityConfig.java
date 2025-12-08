@@ -31,7 +31,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/login/admin", "/WEB-INF/jsp/login.jsp", "/css/**", "/js/**", "/images/**", "/webjars/**", "/h2-console/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/teacher/**").hasRole("TEACHER")
+                        // Disable teacher login routes or redirect them
+                        .requestMatchers("/teacher/**").denyAll() 
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)

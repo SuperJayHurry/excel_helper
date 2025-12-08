@@ -9,13 +9,7 @@
 </head>
 <body class="login-page">
 <div class="login-card">
-    <c:set var="mode" value="${empty loginMode ? 'USER' : loginMode}"/>
-    <h1>
-        <c:choose>
-            <c:when test="${mode eq 'ADMIN'}">管理员登录</c:when>
-            <c:otherwise>用户登录</c:otherwise>
-        </c:choose>
-    </h1>
+    <h1>科研秘书登录</h1>
     <c:if test="${not empty param.error or not empty sessionScope['SPRING_SECURITY_LAST_EXCEPTION']}">
         <div class="alert alert-danger">
             <c:choose>
@@ -41,17 +35,6 @@
         </div>
         <button type="submit">登录</button>
     </form>
-    <div class="switch-link">
-        <c:choose>
-            <c:when test="${mode eq 'ADMIN'}">
-                <a href="/login">返回用户登录</a>
-            </c:when>
-            <c:otherwise>
-                <a href="/login/admin">管理员登录入口</a>
-            </c:otherwise>
-        </c:choose>
-    </div>
 </div>
 </body>
 </html>
-

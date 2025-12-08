@@ -143,6 +143,22 @@ public class TemplateServiceImpl implements TemplateService {
             recipient.setLastReminderAt(now);
             recipient.setReminderCount(recipient.getReminderCount() + 1);
             recipientRepository.save(recipient);
+
+            // Send Reminder Email
+            if (recipient.getRecipient().getEmail() != null && !recipient.getRecipient().getEmail().isEmpty()) {
+                try {
+                    String subject = "【催办】请尽快提交任务: " + recipient.getTemplateTask().getName();
+                    String content = "老师您好，\n\n" +
+                            "您尚未提交任务《" + recipient.getTemplateTask().getName() + "》。\n\n" +
+                            "截止日期: " + recipient.getTemplateTask().getDeadline() + "\n" +
+                            "提醒信息: " + message + "\n\n" +
+                            "请尽快通过回复邮件的方式提交Excel文件。\n" +
+                            "（您可以直接回复之前的任务通知邮件，并附带文件）";
+                    emailService.sendSimpleMessage(recipient.getRecipient().getEmail(), subject, content);
+                } catch (Exception e) {
+                    System.err.println("Failed to send reminder email to " + recipient.getRecipient().getEmail());
+                }
+            }
         });
         pendingRecipients.forEach(recipient -> {
             var log = new org.example.entity.ReminderLog();

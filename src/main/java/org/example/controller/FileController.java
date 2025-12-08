@@ -33,10 +33,14 @@ public class FileController {
             mediaType = MediaType.parseMediaType(contentType);
         }
         InputStreamResource resource = new InputStreamResource(Files.newInputStream(file));
+        
+        // Encode filename for URL safety, but keep spaces as %20 instead of +
+        String encodedFilename = java.net.URLEncoder.encode(filename, java.nio.charset.StandardCharsets.UTF_8)
+                                    .replace("+", "%20");
+        
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFilename + "\"; filename*=UTF-8''" + encodedFilename)
                 .contentType(mediaType)
                 .body(resource);
     }
 }
-

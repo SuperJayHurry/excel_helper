@@ -10,6 +10,9 @@
         <a href="/files?path=${task.templateFilePath}">${task.templateFileName}</a>
     </p>
     <div class="actions">
+        <form method="post" action="/admin/templates/${task.id}/sync-emails">
+            <button type="submit" class="btn-primary">🔄 同步邮件提交</button>
+        </form>
         <form method="post" action="/admin/templates/${task.id}/remind">
             <input type="text" name="message" placeholder="提醒内容" value="请尽快提交《${task.name}》">
             <button type="submit">一键催促未提交老师</button>
@@ -18,6 +21,12 @@
             <button type="submit">生成最新汇总</button>
         </form>
     </div>
+    <c:if test="${not empty message}">
+        <div class="alert success">${message}</div>
+    </c:if>
+    <c:if test="${not empty error}">
+        <div class="alert error">${error}</div>
+    </c:if>
 </section>
 
 <section class="card">
