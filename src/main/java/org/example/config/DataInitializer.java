@@ -22,36 +22,26 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (userRepository.count() > 0) {
-            return;
-        }
-        User admin = new User();
-        admin.setUsername("admin");
-        admin.setPassword(passwordEncoder.encode("admin123"));
-        admin.setFullName("科研秘书");
-        admin.setEmail("secretary@example.com");
-        admin.setDepartment(Department.COMPUTER_SCIENCE);
-        admin.setRole(UserRole.ADMIN);
-        userRepository.save(admin);
+        // Update or Create Admin
+        createOrUpdateUser("admin", "admin123", "科研秘书", "2478779235@qq.com", Department.COMPUTER_SCIENCE, UserRole.ADMIN);
 
-        List<User> teachers = List.of(
-                buildTeacher("alice", "Alice 张", Department.COMPUTER_SCIENCE),
-                buildTeacher("bob", "Bob 李", Department.MATHEMATICS),
-                buildTeacher("cathy", "Cathy 王", Department.PHYSICS),
-                buildTeacher("david", "David 赵", Department.CHEMISTRY)
-        );
-        teachers.forEach(userRepository::save);
+        // Update or Create Teachers
+        createOrUpdateUser("alice", "teacher123", "Alice 张", "1518608338@qq.com", Department.COMPUTER_SCIENCE, UserRole.TEACHER);
+        createOrUpdateUser("bob", "teacher123", "Bob 李", "3028096940@qq.com", Department.MATHEMATICS, UserRole.TEACHER);
+        createOrUpdateUser("cathy", "teacher123", "Cathy 王", "2904287654@qq.com", Department.PHYSICS, UserRole.TEACHER);
+        createOrUpdateUser("david", "teacher123", "David 赵", "", Department.CHEMISTRY, UserRole.TEACHER);
     }
 
-    private User buildTeacher(String username, String name, Department department) {
-        User user = new User();
+    private void createOrUpdateUser(String username, String password, String fullName, String email, Department department, UserRole role) {
+        User user = userRepository.findByUsername(username).orElse(new User());
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode("teacher123"));
-        user.setFullName(name);
-        user.setEmail(username + "@example.com");
+        if (user.getId() == null) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
+        user.setFullName(fullName);
+        user.setEmail(email);
         user.setDepartment(department);
-        user.setRole(UserRole.TEACHER);
-        return user;
+        user.setRole(role);
+        userRepository.save(user);
     }
 }
-

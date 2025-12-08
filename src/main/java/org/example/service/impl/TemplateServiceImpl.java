@@ -20,6 +20,7 @@ import org.example.repository.SubmissionRepository;
 import org.example.repository.TemplateRecipientRepository;
 import org.example.repository.TemplateTaskRepository;
 import org.example.repository.UserRepository;
+import org.example.service.EmailService;
 import org.example.service.FileStorageService;
 import org.example.service.TemplateService;
 import org.example.util.ExcelAggregationUtil;
@@ -37,6 +38,7 @@ public class TemplateServiceImpl implements TemplateService {
     private final ReminderLogRepository reminderLogRepository;
     private final SubmissionRepository submissionRepository;
     private final AggregationResultRepository aggregationResultRepository;
+    private final EmailService emailService;
 
     public TemplateServiceImpl(TemplateTaskRepository templateTaskRepository,
                                TemplateRecipientRepository recipientRepository,
@@ -44,7 +46,8 @@ public class TemplateServiceImpl implements TemplateService {
                                FileStorageService fileStorageService,
                                ReminderLogRepository reminderLogRepository,
                                SubmissionRepository submissionRepository,
-                               AggregationResultRepository aggregationResultRepository) {
+                               AggregationResultRepository aggregationResultRepository,
+                               EmailService emailService) {
         this.templateTaskRepository = templateTaskRepository;
         this.recipientRepository = recipientRepository;
         this.userRepository = userRepository;
@@ -52,6 +55,7 @@ public class TemplateServiceImpl implements TemplateService {
         this.reminderLogRepository = reminderLogRepository;
         this.submissionRepository = submissionRepository;
         this.aggregationResultRepository = aggregationResultRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -73,6 +77,24 @@ public class TemplateServiceImpl implements TemplateService {
             templateRecipient.setTemplateTask(savedTask);
             templateRecipient.setRecipient(recipient);
             recipientRepository.save(templateRecipient);
+
+            // Send email notification
+            if (recipient.getEmail() != null && !recipient.getEmail().isEmpty()) {
+                try {
+                    String subject = "新任务通知: " + savedTask.getName();
+                    String content = "各位老师好，\n\n您有一个新的任务需要处理。\n\n" +
+                            "任务名称: " + savedTask.getName() + "\n" +
+                            "任务描述: " + savedTask.getDescription() + "\n" +
+                            "截止日期: " + savedTask.getDeadline() + "\n\n" +
+                            "请查看附件中的模版，填写后上传到系统。";
+                    
+                    Path absolutePath = fileStorageService.resolvePath(storedPath).toAbsolutePath();
+                    emailService.sendMessageWithAttachment(recipient.getEmail(), subject, content, absolutePath.toString());
+                } catch (Exception e) {
+                    // Log error but don't fail the transaction
+                    System.err.println("Failed to send email to " + recipient.getEmail() + ": " + e.getMessage());
+                }
+            }
         }
         return savedTask;
     }
