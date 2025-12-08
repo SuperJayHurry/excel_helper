@@ -3,3 +3,4 @@ applicaitions.properties 把密码用户名改了
 
 更新：
 1.邮件在dataintializer 中初始化，目前有一个空账号
+2.其余启动一切不变
