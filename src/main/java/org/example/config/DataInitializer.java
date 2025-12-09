@@ -23,12 +23,12 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // Update or Create Admin
-        createOrUpdateUser("admin", "admin123", "科研秘书", "2478779235@qq.com", Department.COMPUTER_SCIENCE, UserRole.ADMIN);
+        createOrUpdateUser("admin", "admin123", "科研秘书", "***", Department.COMPUTER_SCIENCE, UserRole.ADMIN);
 
         // Update or Create Teachers
-        createOrUpdateUser("alice", "teacher123", "Alice 张", "1518608338@qq.com", Department.COMPUTER_SCIENCE, UserRole.TEACHER);
-        createOrUpdateUser("bob", "teacher123", "Bob 李", "3028096940@qq.com", Department.MATHEMATICS, UserRole.TEACHER);
-        createOrUpdateUser("cathy", "teacher123", "Cathy 王", "2904287654@qq.com", Department.PHYSICS, UserRole.TEACHER);
+        createOrUpdateUser("alice", "teacher123", "Alice 张", "***", Department.COMPUTER_SCIENCE, UserRole.TEACHER);
+        createOrUpdateUser("bob", "teacher123", "Bob 李", "***", Department.MATHEMATICS, UserRole.TEACHER);
+        createOrUpdateUser("cathy", "teacher123", "Cathy 王", "***", Department.PHYSICS, UserRole.TEACHER);
         createOrUpdateUser("david", "teacher123", "David 赵", "", Department.CHEMISTRY, UserRole.TEACHER);
     }
 
